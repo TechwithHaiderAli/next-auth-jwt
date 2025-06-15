@@ -11,7 +11,6 @@ export async function ConnectDB(){
         connection.on("error",(error)=>{
         console.log("DataBase Connection Failed",error);
        })
-       process.exit()
         
     } catch (error) {
         console.log("Database ConnectioN Failed", error );
