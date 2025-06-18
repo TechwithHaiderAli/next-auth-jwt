@@ -1,13 +1,32 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import axios from 'axios'
+
 export default function ProfilePage() {
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    setLoading(true)
+    try {
+      await axios.get('/api/users/logout')
+      router.push('/login')
+    } catch (error: any) {
+      console.error('Logout failed:', error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const user = {
     name: 'Haider Ali',
     email: 'haider@example.com',
     bio: 'A full-stack developer with a passion for clean UI, performance, and coffee ☕️.',
     location: 'Lahore, Pakistan',
     joined: 'January 2023',
-    avatarUrl: 'https://api.dicebear.com/7.x/initials/svg?seed=Haider'
+    avatarUrl: 'https://api.dicebear.com/7.x/initials/svg?seed=Haider',
   }
 
   return (
@@ -28,6 +47,16 @@ export default function ProfilePage() {
             <p className="text-sm text-gray-300">{user.location}</p>
             <p className="mt-3">{user.bio}</p>
             <p className="text-xs text-gray-400 mt-1">Joined {user.joined}</p>
+
+            <button
+              onClick={handleLogout}
+              disabled={loading}
+              className={`mt-4 px-4 py-2 rounded-xl font-medium transition-all ${
+                loading ? 'bg-red-400' : 'bg-red-600 hover:bg-red-700'
+              }`}
+            >
+              {loading ? 'Logging out...' : 'Logout'}
+            </button>
           </div>
         </div>
       </div>
