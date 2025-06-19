@@ -26,7 +26,9 @@ export async function POST(request: NextRequest) {
     if (!isPasswordValid) {
       return NextResponse.json({ error: "Invalid credentials." }, { status: 401 }) // unified error message
     }
-
+    if(!user.isVerified){
+      return NextResponse.json({ error: "User not Verified Check your email for Verfication Link after signing up" }, { status: 401 }) // unified error message
+    }
     // Token payload
     const tokenPayload = {
       id: user._id,
